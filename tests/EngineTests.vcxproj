@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Scenario tests for the analysis engine (tracking, counting lines, zones, rules).
+     Built after SurveillanceSystem into the same bin folder, so the deployed DLLs are found.
+     Run bin\<Configuration>\EngineTests.exe : exit code 0 means every check passed. -->
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{8C4E2A17-5B9D-4E63-A0F2-3D7B1C9E4A58}</ProjectGuid>
+    <RootNamespace>EngineTests</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup Label="UserMacros">
+    <SSRoot>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\'))</SSRoot>
+    <SSUseCuda Condition="'$(SSUseCuda)'==''">false</SSUseCuda>
+    <QtDir>$(SSRoot)package\qt\5.15.2\msvc2019_64\</QtDir>
+    <OpenCvDir>$(SSRoot)third_party\opencv\build\</OpenCvDir>
+    <OpenCvVer>4140</OpenCvVer>
+    <OrtDir Condition="'$(SSUseCuda)'!='true'">$(SSRoot)third_party\onnxruntime-win-x64-1.30.0\</OrtDir>
+    <OrtDir Condition="'$(SSUseCuda)'=='true'">$(SSRoot)third_party\onnxruntime-win-x64-gpu_cuda12-1.30.0\</OrtDir>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutDir>$(SSRoot)bin\$(Configuration)\</OutDir>
+    <IntDir>$(SSRoot)obj\$(Platform)\$(Configuration)\tests\</IntDir>
+    <TargetName>EngineTests</TargetName>
+    <LocalDebuggerWorkingDirectory>$(OutDir)</LocalDebuggerWorkingDirectory>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>UNICODE;_UNICODE;WIN32;_CONSOLE;NOMINMAX;WIN32_LEAN_AND_MEAN;_USE_MATH_DEFINES;QT_CORE_LIB;QT_GUI_LIB;QT_SQL_LIB;APP_VERSION="1.0.0";_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SSRoot)src;$(QtDir)include;$(QtDir)include\QtCore;$(QtDir)include\QtGui;$(QtDir)include\QtSql;$(OpenCvDir)include;$(OrtDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 /Zc:__cplusplus /wd4251 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(QtDir)lib;$(OpenCvDir)x64\vc16\lib;$(OrtDir)lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Qt5Cored.lib;Qt5Guid.lib;Qt5Sqld.lib;opencv_world$(OpenCvVer)d.lib;onnxruntime.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>UNICODE;_UNICODE;WIN32;_CONSOLE;NOMINMAX;WIN32_LEAN_AND_MEAN;_USE_MATH_DEFINES;QT_CORE_LIB;QT_GUI_LIB;QT_SQL_LIB;APP_VERSION="1.0.0";NDEBUG;QT_NO_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SSRoot)src;$(QtDir)include;$(QtDir)include\QtCore;$(QtDir)include\QtGui;$(QtDir)include\QtSql;$(OpenCvDir)include;$(OrtDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 /Zc:__cplusplus /wd4251 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(QtDir)lib;$(OpenCvDir)x64\vc16\lib;$(OrtDir)lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Qt5Core.lib;Qt5Gui.lib;Qt5Sql.lib;opencv_world$(OpenCvVer).lib;onnxruntime.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="counting_test.cpp" />
+    <ClCompile Include="user_test.cpp" />
+    <ClCompile Include="..\src\core\AnalysisEngine.cpp" />
+    <ClCompile Include="..\src\core\Detector.cpp" />
+    <ClCompile Include="..\src\core\Overlay.cpp" />
+    <ClCompile Include="..\src\core\Tracker.cpp" />
+    <ClCompile Include="..\src\core\Types.cpp" />
+    <ClCompile Include="..\src\core\PasswordHash.cpp" />
+    <ClCompile Include="..\src\core\Session.cpp" />
+    <ClCompile Include="..\src\core\UserManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\core\AnalysisEngine.h" />
+    <ClInclude Include="..\src\core\Detector.h" />
+    <ClInclude Include="..\src\core\Overlay.h" />
+    <ClInclude Include="..\src\core\Settings.h" />
+    <ClInclude Include="..\src\core\Tracker.h" />
+    <ClInclude Include="..\src\core\Types.h" />
+    <ClInclude Include="..\src\core\PasswordHash.h" />
+    <ClInclude Include="..\src\core\Session.h" />
+    <ClInclude Include="..\src\core\UserManager.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>
