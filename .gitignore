@@ -1,0 +1,36 @@
+# Third-party packages (Qt, OpenCV, ONNX Runtime, CMake installers) and the
+# portable VS2019 toolset - large, and available from their vendors.
+/package/
+/third_party/
+
+# Detection models (large; Ultralytics models are AGPL-3.0) - see models/README.md
+/models/*.onnx
+/models/*.pt
+
+# Build output
+/bin/
+/obj/
+/build/
+/out/
+.vs/
+*.user
+*.aps
+*.pdb
+*.ilk
+*.obj
+*.exe
+*.dll
+
+# Runtime data (database with user accounts, snapshots, recordings, settings)
+data/
+*.db
+*.db-wal
+*.db-shm
+
+# Design reference images supplied for the project
+/c750ded1-bf4f-4609-bfd9-130d04a22b6d.png
+/f12db157-7c2c-4eb2-be9b-a0254464f245.png
+
+# Tool folders
+.claude/
+__pycache__/
