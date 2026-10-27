@@ -1,0 +1,332 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{C1B4DB7A-E4DD-57AD-A76A-E19F4E422351}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{B6543935-A8DD-5503-9BAB-3481691B0414}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{212AA5F9-BEA7-5D9B-B4F1-227384715983}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core">
+      <UniqueIdentifier>{8C505C80-0298-5DC8-8BFA-6706D6DF971A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ui">
+      <UniqueIdentifier>{9DEE2139-D270-553B-BB4D-1D9C9DE1C90E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ui\pages">
+      <UniqueIdentifier>{B3444581-DBB6-5954-B8C7-D1314E8FE128}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ui\widgets">
+      <UniqueIdentifier>{99AFD351-4C49-5650-A717-D4E9BB3CCBE5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\core\AnalysisEngine.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\AnalyticsStore.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\CameraManager.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\CameraWorker.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Database.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Detector.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\EventManager.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Overlay.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\PasswordHash.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Session.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Settings.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\SystemMonitor.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Tracker.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\Types.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\UserManager.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\AccountDialogs.cpp">
+      <Filter>Source Files\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\MainWindow.cpp">
+      <Filter>Source Files\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\Theme.cpp">
+      <Filter>Source Files\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\pages\AnalyticsPage.cpp">
+      <Filter>Source Files\ui\pages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\pages\CameraDialog.cpp">
+      <Filter>Source Files\ui\pages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\pages\CamerasPage.cpp">
+      <Filter>Source Files\ui\pages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\pages\EventsPage.cpp">
+      <Filter>Source Files\ui\pages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\pages\LiveViewPage.cpp">
+      <Filter>Source Files\ui\pages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\pages\MediaPage.cpp">
+      <Filter>Source Files\ui\pages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\pages\SettingsPage.cpp">
+      <Filter>Source Files\ui\pages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\pages\UsersPage.cpp">
+      <Filter>Source Files\ui\pages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\pages\ZonesPage.cpp">
+      <Filter>Source Files\ui\pages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\widgets\CameraGrid.cpp">
+      <Filter>Source Files\ui\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\widgets\Charts.cpp">
+      <Filter>Source Files\ui\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\widgets\Common.cpp">
+      <Filter>Source Files\ui\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\widgets\VideoTile.cpp">
+      <Filter>Source Files\ui\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\widgets\ZoneEditor.cpp">
+      <Filter>Source Files\ui\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="$(GenDir)moc_AnalyticsStore.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(GenDir)moc_CameraManager.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(GenDir)moc_CameraWorker.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(GenDir)moc_EventManager.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(GenDir)moc_AccountDialogs.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(GenDir)moc_MainWindow.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(GenDir)moc_AnalyticsPage.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(GenDir)moc_CameraDialog.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(GenDir)moc_CamerasPage.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(GenDir)moc_EventsPage.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(GenDir)moc_LiveViewPage.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(GenDir)moc_MediaPage.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(GenDir)moc_SettingsPage.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(GenDir)moc_UsersPage.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(GenDir)moc_ZonesPage.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(GenDir)moc_CameraGrid.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(GenDir)moc_Charts.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(GenDir)moc_Common.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(GenDir)moc_VideoTile.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(GenDir)moc_ZoneEditor.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(GenDir)qrc_resources.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\core\AnalysisEngine.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Database.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Detector.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Overlay.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\PasswordHash.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Session.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Settings.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\SystemMonitor.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Tracker.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Types.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\UserManager.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\AppCore.h">
+      <Filter>Source Files\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\Theme.h">
+      <Filter>Source Files\ui</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="src\core\AnalyticsStore.h">
+      <Filter>Source Files\core</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\core\CameraManager.h">
+      <Filter>Source Files\core</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\core\CameraWorker.h">
+      <Filter>Source Files\core</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\core\EventManager.h">
+      <Filter>Source Files\core</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\AccountDialogs.h">
+      <Filter>Source Files\ui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\MainWindow.h">
+      <Filter>Source Files\ui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\pages\AnalyticsPage.h">
+      <Filter>Source Files\ui\pages</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\pages\CameraDialog.h">
+      <Filter>Source Files\ui\pages</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\pages\CamerasPage.h">
+      <Filter>Source Files\ui\pages</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\pages\EventsPage.h">
+      <Filter>Source Files\ui\pages</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\pages\LiveViewPage.h">
+      <Filter>Source Files\ui\pages</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\pages\MediaPage.h">
+      <Filter>Source Files\ui\pages</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\pages\SettingsPage.h">
+      <Filter>Source Files\ui\pages</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\pages\UsersPage.h">
+      <Filter>Source Files\ui\pages</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\pages\ZonesPage.h">
+      <Filter>Source Files\ui\pages</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\widgets\CameraGrid.h">
+      <Filter>Source Files\ui\widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\widgets\Charts.h">
+      <Filter>Source Files\ui\widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\widgets\Common.h">
+      <Filter>Source Files\ui\widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\widgets\VideoTile.h">
+      <Filter>Source Files\ui\widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\widgets\ZoneEditor.h">
+      <Filter>Source Files\ui\widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="resources\resources.qrc">
+      <Filter>Resources</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\style\dark.qss">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="resources\app.png">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="resources\icons\check.svg">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="resources\icons\chevron-down.svg">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="resources\icons\chevron-up.svg">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="resources\icons\radio.svg">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="README.md">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="models\README.md">
+      <Filter>Resources</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resources\app.rc">
+      <Filter>Resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\app.ico">
+      <Filter>Resources</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

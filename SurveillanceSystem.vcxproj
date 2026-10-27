@@ -1,0 +1,394 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Surveillance System - native Visual Studio 2019 project (MSVC v142, x64).
+     Qt moc/rcc run as Custom Build steps; no CMake or Qt VS Tools needed.
+     Third-party paths are relative to this file:
+       package\qt\5.15.2\msvc2019_64, third_party\opencv, third_party\onnxruntime-*
+     (run setup_packages.bat once to extract OpenCV / ONNX Runtime).
+     Set SSUseCuda=true (below or via /p:SSUseCuda=true) for the CUDA 12 ONNX Runtime. -->
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{6A1F3C52-8E4B-4D7A-9C21-5B3E2F7A9D10}</ProjectGuid>
+    <RootNamespace>SurveillanceSystem</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros">
+    <SSRoot>$(MSBuildThisFileDirectory)</SSRoot>
+    <SSUseCuda Condition="'$(SSUseCuda)'==''">false</SSUseCuda>
+    <QtDir>$(SSRoot)package\qt\5.15.2\msvc2019_64\</QtDir>
+    <OpenCvDir>$(SSRoot)third_party\opencv\build\</OpenCvDir>
+    <OpenCvVer>4140</OpenCvVer>
+    <OrtDir Condition="'$(SSUseCuda)'!='true'">$(SSRoot)third_party\onnxruntime-win-x64-1.30.0\</OrtDir>
+    <OrtDir Condition="'$(SSUseCuda)'=='true'">$(SSRoot)third_party\onnxruntime-win-x64-gpu_cuda12-1.30.0\</OrtDir>
+    <GenDir>$(SSRoot)obj\$(Platform)\$(Configuration)\generated\</GenDir>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutDir>$(SSRoot)bin\$(Configuration)\</OutDir>
+    <IntDir>$(SSRoot)obj\$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>SurveillanceSystem</TargetName>
+    <LocalDebuggerWorkingDirectory>$(OutDir)</LocalDebuggerWorkingDirectory>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>false</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>UNICODE;_UNICODE;WIN32;_WINDOWS;NOMINMAX;WIN32_LEAN_AND_MEAN;_USE_MATH_DEFINES;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;QT_SVG_LIB;QT_SQL_LIB;QT_CONCURRENT_LIB;QT_DEPRECATED_WARNINGS;APP_VERSION="1.0.0";_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SSRoot)src;$(GenDir);$(QtDir)include;$(QtDir)include\QtCore;$(QtDir)include\QtGui;$(QtDir)include\QtWidgets;$(QtDir)include\QtSvg;$(QtDir)include\QtSql;$(QtDir)include\QtConcurrent;$(QtDir)mkspecs\win32-msvc;$(OpenCvDir)include;$(OrtDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 /Zc:__cplusplus /wd4251 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(QtDir)lib;$(OpenCvDir)x64\vc16\lib;$(OrtDir)lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Qt5Cored.lib;Qt5Guid.lib;Qt5Widgetsd.lib;Qt5Svgd.lib;Qt5Sqld.lib;Qt5Concurrentd.lib;qtmaind.lib;opencv_world$(OpenCvVer)d.lib;onnxruntime.lib;psapi.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Message>Deploying Qt, OpenCV and ONNX Runtime DLLs</Message>
+      <Command>set "PATH=$(QtDir)bin;%PATH%"
+"$(QtDir)bin\windeployqt.exe" --debug --no-translations --no-system-d3d-compiler --no-opengl-sw --no-compiler-runtime --verbose 0 "$(TargetPath)"
+if errorlevel 1 exit /b 1
+if not exist "$(OutDir)opencv_world$(OpenCvVer)d.dll" copy /y "$(OpenCvDir)x64\vc16\bin\opencv_world$(OpenCvVer)d.dll" "$(OutDir)" &gt;nul
+if not exist "$(OutDir)opencv_videoio_ffmpeg$(OpenCvVer)_64.dll" copy /y "$(OpenCvDir)x64\vc16\bin\opencv_videoio_ffmpeg$(OpenCvVer)_64.dll" "$(OutDir)" &gt;nul
+copy /y "$(OrtDir)lib\onnxruntime.dll" "$(OutDir)" &gt;nul
+copy /y "$(OrtDir)lib\onnxruntime_providers_shared.dll" "$(OutDir)" &gt;nul
+if exist "$(OrtDir)lib\onnxruntime_providers_cuda.dll" copy /y "$(OrtDir)lib\onnxruntime_providers_cuda.dll" "$(OutDir)" &gt;nul
+xcopy /y /e /i /d /q "$(SSRoot)models" "$(OutDir)models" &gt;nul
+exit /b 0</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>false</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>UNICODE;_UNICODE;WIN32;_WINDOWS;NOMINMAX;WIN32_LEAN_AND_MEAN;_USE_MATH_DEFINES;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;QT_SVG_LIB;QT_SQL_LIB;QT_CONCURRENT_LIB;QT_DEPRECATED_WARNINGS;APP_VERSION="1.0.0";NDEBUG;QT_NO_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SSRoot)src;$(GenDir);$(QtDir)include;$(QtDir)include\QtCore;$(QtDir)include\QtGui;$(QtDir)include\QtWidgets;$(QtDir)include\QtSvg;$(QtDir)include\QtSql;$(QtDir)include\QtConcurrent;$(QtDir)mkspecs\win32-msvc;$(OpenCvDir)include;$(OrtDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 /Zc:__cplusplus /wd4251 %(AdditionalOptions)</AdditionalOptions>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(QtDir)lib;$(OpenCvDir)x64\vc16\lib;$(OrtDir)lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Qt5Core.lib;Qt5Gui.lib;Qt5Widgets.lib;Qt5Svg.lib;Qt5Sql.lib;Qt5Concurrent.lib;qtmain.lib;opencv_world$(OpenCvVer).lib;onnxruntime.lib;psapi.lib;shell32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Message>Deploying Qt, OpenCV and ONNX Runtime DLLs</Message>
+      <Command>set "PATH=$(QtDir)bin;%PATH%"
+"$(QtDir)bin\windeployqt.exe" --release --no-translations --no-system-d3d-compiler --no-opengl-sw --no-compiler-runtime --verbose 0 "$(TargetPath)"
+if errorlevel 1 exit /b 1
+if not exist "$(OutDir)opencv_world$(OpenCvVer).dll" copy /y "$(OpenCvDir)x64\vc16\bin\opencv_world$(OpenCvVer).dll" "$(OutDir)" &gt;nul
+if not exist "$(OutDir)opencv_videoio_ffmpeg$(OpenCvVer)_64.dll" copy /y "$(OpenCvDir)x64\vc16\bin\opencv_videoio_ffmpeg$(OpenCvVer)_64.dll" "$(OutDir)" &gt;nul
+copy /y "$(OrtDir)lib\onnxruntime.dll" "$(OutDir)" &gt;nul
+copy /y "$(OrtDir)lib\onnxruntime_providers_shared.dll" "$(OutDir)" &gt;nul
+if exist "$(OrtDir)lib\onnxruntime_providers_cuda.dll" copy /y "$(OrtDir)lib\onnxruntime_providers_cuda.dll" "$(OutDir)" &gt;nul
+xcopy /y /e /i /d /q "$(SSRoot)models" "$(OutDir)models" &gt;nul
+exit /b 0</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\core\AnalysisEngine.cpp" />
+    <ClCompile Include="src\core\AnalyticsStore.cpp" />
+    <ClCompile Include="src\core\CameraManager.cpp" />
+    <ClCompile Include="src\core\CameraWorker.cpp" />
+    <ClCompile Include="src\core\Database.cpp" />
+    <ClCompile Include="src\core\Detector.cpp" />
+    <ClCompile Include="src\core\EventManager.cpp" />
+    <ClCompile Include="src\core\Overlay.cpp" />
+    <ClCompile Include="src\core\PasswordHash.cpp" />
+    <ClCompile Include="src\core\Session.cpp" />
+    <ClCompile Include="src\core\Settings.cpp" />
+    <ClCompile Include="src\core\SystemMonitor.cpp" />
+    <ClCompile Include="src\core\Tracker.cpp" />
+    <ClCompile Include="src\core\Types.cpp" />
+    <ClCompile Include="src\core\UserManager.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\ui\AccountDialogs.cpp" />
+    <ClCompile Include="src\ui\MainWindow.cpp" />
+    <ClCompile Include="src\ui\Theme.cpp" />
+    <ClCompile Include="src\ui\pages\AnalyticsPage.cpp" />
+    <ClCompile Include="src\ui\pages\CameraDialog.cpp" />
+    <ClCompile Include="src\ui\pages\CamerasPage.cpp" />
+    <ClCompile Include="src\ui\pages\EventsPage.cpp" />
+    <ClCompile Include="src\ui\pages\LiveViewPage.cpp" />
+    <ClCompile Include="src\ui\pages\MediaPage.cpp" />
+    <ClCompile Include="src\ui\pages\SettingsPage.cpp" />
+    <ClCompile Include="src\ui\pages\UsersPage.cpp" />
+    <ClCompile Include="src\ui\pages\ZonesPage.cpp" />
+    <ClCompile Include="src\ui\widgets\CameraGrid.cpp" />
+    <ClCompile Include="src\ui\widgets\Charts.cpp" />
+    <ClCompile Include="src\ui\widgets\Common.cpp" />
+    <ClCompile Include="src\ui\widgets\VideoTile.cpp" />
+    <ClCompile Include="src\ui\widgets\ZoneEditor.cpp" />
+  </ItemGroup>
+  <ItemGroup Label="Generated by moc / rcc">
+    <ClCompile Include="$(GenDir)moc_AnalyticsStore.cpp" />
+    <ClCompile Include="$(GenDir)moc_CameraManager.cpp" />
+    <ClCompile Include="$(GenDir)moc_CameraWorker.cpp" />
+    <ClCompile Include="$(GenDir)moc_EventManager.cpp" />
+    <ClCompile Include="$(GenDir)moc_AccountDialogs.cpp" />
+    <ClCompile Include="$(GenDir)moc_MainWindow.cpp" />
+    <ClCompile Include="$(GenDir)moc_AnalyticsPage.cpp" />
+    <ClCompile Include="$(GenDir)moc_CameraDialog.cpp" />
+    <ClCompile Include="$(GenDir)moc_CamerasPage.cpp" />
+    <ClCompile Include="$(GenDir)moc_EventsPage.cpp" />
+    <ClCompile Include="$(GenDir)moc_LiveViewPage.cpp" />
+    <ClCompile Include="$(GenDir)moc_MediaPage.cpp" />
+    <ClCompile Include="$(GenDir)moc_SettingsPage.cpp" />
+    <ClCompile Include="$(GenDir)moc_UsersPage.cpp" />
+    <ClCompile Include="$(GenDir)moc_ZonesPage.cpp" />
+    <ClCompile Include="$(GenDir)moc_CameraGrid.cpp" />
+    <ClCompile Include="$(GenDir)moc_Charts.cpp" />
+    <ClCompile Include="$(GenDir)moc_Common.cpp" />
+    <ClCompile Include="$(GenDir)moc_VideoTile.cpp" />
+    <ClCompile Include="$(GenDir)moc_ZoneEditor.cpp" />
+    <ClCompile Include="$(GenDir)qrc_resources.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\core\AnalysisEngine.h" />
+    <ClInclude Include="src\core\Database.h" />
+    <ClInclude Include="src\core\Detector.h" />
+    <ClInclude Include="src\core\Overlay.h" />
+    <ClInclude Include="src\core\PasswordHash.h" />
+    <ClInclude Include="src\core\Session.h" />
+    <ClInclude Include="src\core\Settings.h" />
+    <ClInclude Include="src\core\SystemMonitor.h" />
+    <ClInclude Include="src\core\Tracker.h" />
+    <ClInclude Include="src\core\Types.h" />
+    <ClInclude Include="src\core\UserManager.h" />
+    <ClInclude Include="src\ui\AppCore.h" />
+    <ClInclude Include="src\ui\Theme.h" />
+  </ItemGroup>
+  <ItemGroup Label="Qt meta-object compiler">
+    <CustomBuild Include="src\core\AnalyticsStore.h">
+      <FileType>Document</FileType>
+      <Message>MOC %(Filename)%(Extension)</Message>
+      <Command>if not exist "$(GenDir)" mkdir "$(GenDir)"
+"$(QtDir)bin\moc.exe" -DUNICODE -D_UNICODE -DWIN32 -DNOMINMAX -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I$(SSRoot)src" "%(FullPath)" -o "$(GenDir)moc_%(Filename).cpp"</Command>
+      <Outputs>$(GenDir)moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs>$(QtDir)bin\moc.exe</AdditionalInputs>
+    </CustomBuild>
+    <CustomBuild Include="src\core\CameraManager.h">
+      <FileType>Document</FileType>
+      <Message>MOC %(Filename)%(Extension)</Message>
+      <Command>if not exist "$(GenDir)" mkdir "$(GenDir)"
+"$(QtDir)bin\moc.exe" -DUNICODE -D_UNICODE -DWIN32 -DNOMINMAX -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I$(SSRoot)src" "%(FullPath)" -o "$(GenDir)moc_%(Filename).cpp"</Command>
+      <Outputs>$(GenDir)moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs>$(QtDir)bin\moc.exe</AdditionalInputs>
+    </CustomBuild>
+    <CustomBuild Include="src\core\CameraWorker.h">
+      <FileType>Document</FileType>
+      <Message>MOC %(Filename)%(Extension)</Message>
+      <Command>if not exist "$(GenDir)" mkdir "$(GenDir)"
+"$(QtDir)bin\moc.exe" -DUNICODE -D_UNICODE -DWIN32 -DNOMINMAX -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I$(SSRoot)src" "%(FullPath)" -o "$(GenDir)moc_%(Filename).cpp"</Command>
+      <Outputs>$(GenDir)moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs>$(QtDir)bin\moc.exe</AdditionalInputs>
+    </CustomBuild>
+    <CustomBuild Include="src\core\EventManager.h">
+      <FileType>Document</FileType>
+      <Message>MOC %(Filename)%(Extension)</Message>
+      <Command>if not exist "$(GenDir)" mkdir "$(GenDir)"
+"$(QtDir)bin\moc.exe" -DUNICODE -D_UNICODE -DWIN32 -DNOMINMAX -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I$(SSRoot)src" "%(FullPath)" -o "$(GenDir)moc_%(Filename).cpp"</Command>
+      <Outputs>$(GenDir)moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs>$(QtDir)bin\moc.exe</AdditionalInputs>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\AccountDialogs.h">
+      <FileType>Document</FileType>
+      <Message>MOC %(Filename)%(Extension)</Message>
+      <Command>if not exist "$(GenDir)" mkdir "$(GenDir)"
+"$(QtDir)bin\moc.exe" -DUNICODE -D_UNICODE -DWIN32 -DNOMINMAX -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I$(SSRoot)src" "%(FullPath)" -o "$(GenDir)moc_%(Filename).cpp"</Command>
+      <Outputs>$(GenDir)moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs>$(QtDir)bin\moc.exe</AdditionalInputs>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\MainWindow.h">
+      <FileType>Document</FileType>
+      <Message>MOC %(Filename)%(Extension)</Message>
+      <Command>if not exist "$(GenDir)" mkdir "$(GenDir)"
+"$(QtDir)bin\moc.exe" -DUNICODE -D_UNICODE -DWIN32 -DNOMINMAX -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I$(SSRoot)src" "%(FullPath)" -o "$(GenDir)moc_%(Filename).cpp"</Command>
+      <Outputs>$(GenDir)moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs>$(QtDir)bin\moc.exe</AdditionalInputs>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\pages\AnalyticsPage.h">
+      <FileType>Document</FileType>
+      <Message>MOC %(Filename)%(Extension)</Message>
+      <Command>if not exist "$(GenDir)" mkdir "$(GenDir)"
+"$(QtDir)bin\moc.exe" -DUNICODE -D_UNICODE -DWIN32 -DNOMINMAX -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I$(SSRoot)src" "%(FullPath)" -o "$(GenDir)moc_%(Filename).cpp"</Command>
+      <Outputs>$(GenDir)moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs>$(QtDir)bin\moc.exe</AdditionalInputs>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\pages\CameraDialog.h">
+      <FileType>Document</FileType>
+      <Message>MOC %(Filename)%(Extension)</Message>
+      <Command>if not exist "$(GenDir)" mkdir "$(GenDir)"
+"$(QtDir)bin\moc.exe" -DUNICODE -D_UNICODE -DWIN32 -DNOMINMAX -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I$(SSRoot)src" "%(FullPath)" -o "$(GenDir)moc_%(Filename).cpp"</Command>
+      <Outputs>$(GenDir)moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs>$(QtDir)bin\moc.exe</AdditionalInputs>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\pages\CamerasPage.h">
+      <FileType>Document</FileType>
+      <Message>MOC %(Filename)%(Extension)</Message>
+      <Command>if not exist "$(GenDir)" mkdir "$(GenDir)"
+"$(QtDir)bin\moc.exe" -DUNICODE -D_UNICODE -DWIN32 -DNOMINMAX -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I$(SSRoot)src" "%(FullPath)" -o "$(GenDir)moc_%(Filename).cpp"</Command>
+      <Outputs>$(GenDir)moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs>$(QtDir)bin\moc.exe</AdditionalInputs>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\pages\EventsPage.h">
+      <FileType>Document</FileType>
+      <Message>MOC %(Filename)%(Extension)</Message>
+      <Command>if not exist "$(GenDir)" mkdir "$(GenDir)"
+"$(QtDir)bin\moc.exe" -DUNICODE -D_UNICODE -DWIN32 -DNOMINMAX -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I$(SSRoot)src" "%(FullPath)" -o "$(GenDir)moc_%(Filename).cpp"</Command>
+      <Outputs>$(GenDir)moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs>$(QtDir)bin\moc.exe</AdditionalInputs>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\pages\LiveViewPage.h">
+      <FileType>Document</FileType>
+      <Message>MOC %(Filename)%(Extension)</Message>
+      <Command>if not exist "$(GenDir)" mkdir "$(GenDir)"
+"$(QtDir)bin\moc.exe" -DUNICODE -D_UNICODE -DWIN32 -DNOMINMAX -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I$(SSRoot)src" "%(FullPath)" -o "$(GenDir)moc_%(Filename).cpp"</Command>
+      <Outputs>$(GenDir)moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs>$(QtDir)bin\moc.exe</AdditionalInputs>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\pages\MediaPage.h">
+      <FileType>Document</FileType>
+      <Message>MOC %(Filename)%(Extension)</Message>
+      <Command>if not exist "$(GenDir)" mkdir "$(GenDir)"
+"$(QtDir)bin\moc.exe" -DUNICODE -D_UNICODE -DWIN32 -DNOMINMAX -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I$(SSRoot)src" "%(FullPath)" -o "$(GenDir)moc_%(Filename).cpp"</Command>
+      <Outputs>$(GenDir)moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs>$(QtDir)bin\moc.exe</AdditionalInputs>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\pages\SettingsPage.h">
+      <FileType>Document</FileType>
+      <Message>MOC %(Filename)%(Extension)</Message>
+      <Command>if not exist "$(GenDir)" mkdir "$(GenDir)"
+"$(QtDir)bin\moc.exe" -DUNICODE -D_UNICODE -DWIN32 -DNOMINMAX -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I$(SSRoot)src" "%(FullPath)" -o "$(GenDir)moc_%(Filename).cpp"</Command>
+      <Outputs>$(GenDir)moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs>$(QtDir)bin\moc.exe</AdditionalInputs>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\pages\UsersPage.h">
+      <FileType>Document</FileType>
+      <Message>MOC %(Filename)%(Extension)</Message>
+      <Command>if not exist "$(GenDir)" mkdir "$(GenDir)"
+"$(QtDir)bin\moc.exe" -DUNICODE -D_UNICODE -DWIN32 -DNOMINMAX -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I$(SSRoot)src" "%(FullPath)" -o "$(GenDir)moc_%(Filename).cpp"</Command>
+      <Outputs>$(GenDir)moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs>$(QtDir)bin\moc.exe</AdditionalInputs>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\pages\ZonesPage.h">
+      <FileType>Document</FileType>
+      <Message>MOC %(Filename)%(Extension)</Message>
+      <Command>if not exist "$(GenDir)" mkdir "$(GenDir)"
+"$(QtDir)bin\moc.exe" -DUNICODE -D_UNICODE -DWIN32 -DNOMINMAX -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I$(SSRoot)src" "%(FullPath)" -o "$(GenDir)moc_%(Filename).cpp"</Command>
+      <Outputs>$(GenDir)moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs>$(QtDir)bin\moc.exe</AdditionalInputs>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\widgets\CameraGrid.h">
+      <FileType>Document</FileType>
+      <Message>MOC %(Filename)%(Extension)</Message>
+      <Command>if not exist "$(GenDir)" mkdir "$(GenDir)"
+"$(QtDir)bin\moc.exe" -DUNICODE -D_UNICODE -DWIN32 -DNOMINMAX -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I$(SSRoot)src" "%(FullPath)" -o "$(GenDir)moc_%(Filename).cpp"</Command>
+      <Outputs>$(GenDir)moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs>$(QtDir)bin\moc.exe</AdditionalInputs>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\widgets\Charts.h">
+      <FileType>Document</FileType>
+      <Message>MOC %(Filename)%(Extension)</Message>
+      <Command>if not exist "$(GenDir)" mkdir "$(GenDir)"
+"$(QtDir)bin\moc.exe" -DUNICODE -D_UNICODE -DWIN32 -DNOMINMAX -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I$(SSRoot)src" "%(FullPath)" -o "$(GenDir)moc_%(Filename).cpp"</Command>
+      <Outputs>$(GenDir)moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs>$(QtDir)bin\moc.exe</AdditionalInputs>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\widgets\Common.h">
+      <FileType>Document</FileType>
+      <Message>MOC %(Filename)%(Extension)</Message>
+      <Command>if not exist "$(GenDir)" mkdir "$(GenDir)"
+"$(QtDir)bin\moc.exe" -DUNICODE -D_UNICODE -DWIN32 -DNOMINMAX -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I$(SSRoot)src" "%(FullPath)" -o "$(GenDir)moc_%(Filename).cpp"</Command>
+      <Outputs>$(GenDir)moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs>$(QtDir)bin\moc.exe</AdditionalInputs>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\widgets\VideoTile.h">
+      <FileType>Document</FileType>
+      <Message>MOC %(Filename)%(Extension)</Message>
+      <Command>if not exist "$(GenDir)" mkdir "$(GenDir)"
+"$(QtDir)bin\moc.exe" -DUNICODE -D_UNICODE -DWIN32 -DNOMINMAX -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I$(SSRoot)src" "%(FullPath)" -o "$(GenDir)moc_%(Filename).cpp"</Command>
+      <Outputs>$(GenDir)moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs>$(QtDir)bin\moc.exe</AdditionalInputs>
+    </CustomBuild>
+    <CustomBuild Include="src\ui\widgets\ZoneEditor.h">
+      <FileType>Document</FileType>
+      <Message>MOC %(Filename)%(Extension)</Message>
+      <Command>if not exist "$(GenDir)" mkdir "$(GenDir)"
+"$(QtDir)bin\moc.exe" -DUNICODE -D_UNICODE -DWIN32 -DNOMINMAX -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB "-I$(SSRoot)src" "%(FullPath)" -o "$(GenDir)moc_%(Filename).cpp"</Command>
+      <Outputs>$(GenDir)moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs>$(QtDir)bin\moc.exe</AdditionalInputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup Label="Qt resources">
+    <CustomBuild Include="resources\resources.qrc">
+      <FileType>Document</FileType>
+      <Message>RCC %(Filename)%(Extension)</Message>
+      <Command>if not exist "$(GenDir)" mkdir "$(GenDir)"
+"$(QtDir)bin\rcc.exe" -name resources "%(FullPath)" -o "$(GenDir)qrc_resources.cpp"</Command>
+      <Outputs>$(GenDir)qrc_resources.cpp</Outputs>
+      <AdditionalInputs>$(QtDir)bin\rcc.exe;resources\style\dark.qss;resources\app.png;resources\icons\check.svg;resources\icons\chevron-down.svg;resources\icons\chevron-up.svg;resources\icons\radio.svg</AdditionalInputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\style\dark.qss" />
+    <None Include="resources\app.png" />
+    <None Include="resources\icons\check.svg" />
+    <None Include="resources\icons\chevron-down.svg" />
+    <None Include="resources\icons\chevron-up.svg" />
+    <None Include="resources\icons\radio.svg" />
+    <None Include="README.md" />
+    <None Include="models\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resources\app.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\app.ico" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
