@@ -1,0 +1,11 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="/">
+        <file>style/dark.qss</file>
+        <file>icons/chevron-down.svg</file>
+        <file>icons/chevron-up.svg</file>
+        <file>icons/check.svg</file>
+        <file>icons/radio.svg</file>
+        <file>app.png</file>
+    </qresource>
+</RCC>
