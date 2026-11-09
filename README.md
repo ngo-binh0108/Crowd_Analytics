@@ -240,3 +240,9 @@ docs/       screenshots
 SurveillanceSystem.sln / .vcxproj   native VS2019 project (bin\, obj\ are its outputs)
 CMakeLists.txt, build_vs2019.bat    alternative CMake route (build\ is its output)
 ```
+
+## License
+
+The source code in this repository is under the MIT license, see [LICENSE](LICENSE).
+
+That does not cover the detection models or the libraries the app uses. The Ultralytics YOLO models are AGPL-3.0, see [models/README.md](models/README.md), and Qt, OpenCV and ONNX Runtime keep their own licenses.
