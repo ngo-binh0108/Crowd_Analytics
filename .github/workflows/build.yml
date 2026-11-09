@@ -1,0 +1,51 @@
+name: Build and test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      # The solution expects Qt in package\qt and the rest in third_party, the
+      # same places setup_packages.bat uses on a developer machine.
+      - uses: jurplel/install-qt-action@v4
+        with:
+          version: 5.15.2
+          host: windows
+          target: desktop
+          arch: win64_msvc2019_64
+          dir: ${{ github.workspace }}/package
+          cache: true
+
+      - uses: actions/cache@v4
+        id: third-party
+        with:
+          path: third_party
+          key: third-party-opencv-4.14.0-onnxruntime-1.30.0
+
+      - name: Download OpenCV and ONNX Runtime
+        if: steps.third-party.outputs.cache-hit != 'true'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force third_party | Out-Null
+          curl.exe -fsSL -o opencv.exe https://github.com/opencv/opencv/releases/download/4.14.0/opencv-4.14.0-windows.exe
+          Start-Process -Wait -FilePath .\opencv.exe -ArgumentList '-othird_party', '-y'
+          curl.exe -fsSL -o onnxruntime.zip https://github.com/microsoft/onnxruntime/releases/download/v1.30.0/onnxruntime-win-x64-1.30.0.zip
+          Expand-Archive -Force onnxruntime.zip third_party
+
+      - uses: microsoft/setup-msbuild@v2
+
+      - name: Build
+        run: msbuild SurveillanceSystem.sln /m /nologo /v:minimal /p:Configuration=Release /p:Platform=x64
+
+      - name: Run the engine tests
+        working-directory: bin/Release
+        run: .\EngineTests.exe
